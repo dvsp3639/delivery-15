@@ -115,7 +115,7 @@ console.log("Customer Mobile:", customerMobile);
                 });
 
             const result = await response.text();
-            console.log("Google Sheet Response:", result);
+            // console.log("Google Sheet Response:", result);
 
   } catch (error) {
     console.error("Error sending data:", error);
@@ -124,7 +124,7 @@ console.log("Customer Mobile:", customerMobile);
 
             await saveOrderToStorage();
         sessionStorage.clear();
-     window.location.href = `payment/success`;
+     window.location.href = `/success`;
 
     } else if (data.statusData.state === "PENDING") {
                 setTimeout(() => {
@@ -133,7 +133,7 @@ console.log("Customer Mobile:", customerMobile);
 
      }
         else {
-      window.location.href = `/payment`;
+      window.location.href = `../payment`;
     }
   }
 
