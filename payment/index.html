@@ -125,6 +125,7 @@ console.log("Customer Mobile:", customerMobile);
             await saveOrderToStorage();
         sessionStorage.clear();
      window.location.href = `/success`;
+        return;
 
     } else if (data.statusData.state === "PENDING") {
                 setTimeout(() => {
@@ -342,7 +343,6 @@ console.log("Customer Mobile:", customerMobile);
                 sessionStorage.removeItem('cartData');
                 
                 // Redirect back to menu
-                window.location.href = '/';
                 return true;
                 
             } catch (error) {
