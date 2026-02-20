@@ -172,9 +172,18 @@ console.log("Customer Mobile:", customerMobile);
 
       callback: function (paymentResult) {
         console.log("Payment Finished:", paymentResult);
+        if (paymentResult === "USER_CANCEL") {
+            window.PhonePeCheckout.closePage();
+            return;
 
-        // ✅ Verify payment officially
-        verifyPayment(merchantOrderId, token);
+        } else if (paymentResult === "CONCLUDED") {
+                   // ✅ Verify payment officially
+                    verifyPayment(merchantOrderId, token);
+                    return;
+
+        } 
+ 
+
       },
     });
   }
