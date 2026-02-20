@@ -43,7 +43,13 @@
                         <span>Subtotal:</span>
                         <span id="checkoutSubtotal">₹ 0.00</span>
                     </div>
+                    
+                    <div class="summary-row">
+                        <span>GST (5%):</span>
+                        <span id="checkoutGST">₹ 0.00</span>
+                    </div>
                     <div class="summary-row discount-row">
+    
                         <span>Discount (10%):</span>
                         <span id="checkoutDiscount">- ₹ 0.00</span>
                     </div>
@@ -240,6 +246,14 @@ console.log("Customer Mobile:", customerMobile);
                         <p>Add some delicious items to your cart</p>
                     </div>
                 `;
+
+                // Reset all totals to zero
+                if (checkoutSubtotal) checkoutSubtotal.textContent = `₹ 0.00`;
+                const checkoutGST = document.getElementById('checkoutGST');
+                if (checkoutGST) checkoutGST.textContent = `₹ 0.00`;
+                if (checkoutDiscount) checkoutDiscount.textContent = `- ₹ 0.00`;
+                if (checkoutTotal) checkoutTotal.textContent = `₹ 0.00`;
+
                 return;
             }
             
@@ -259,7 +273,12 @@ console.log("Customer Mobile:", customerMobile);
                     <div class="cart-item-details">
                         <div class="cart-item-total">₹ ${itemTotal.toFixed(2)}</div>
                         <div class="cart-item-controls">
+                            
                             <span class="quantity">Quantity: ${item.quantity}</span>
+                            <button class="delete-item" onclick="removeItem('${item.name}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+    
                         </div>
                     </div>
                 `;
@@ -268,15 +287,31 @@ console.log("Customer Mobile:", customerMobile);
             });
             
             // Update checkout summary
-            const discount = cartData.discount || subtotal * 0.10;
-            const total = cartData.total || subtotal - discount;
+            
+            const gst = subtotal * 0.05;
+            const subtotalWithGST = subtotal + gst;
+            const discount = subtotalWithGST * 0.10;
+            const total = subtotalWithGST - discount;
+    
             
             if (checkoutSubtotal) checkoutSubtotal.textContent = `₹ ${subtotal.toFixed(2)}`;
+            
+            const checkoutGST = document.getElementById('checkoutGST');
+            if (checkoutGST) checkoutGST.textContent = `₹ ${gst.toFixed(2)}`;
             if (checkoutDiscount) checkoutDiscount.textContent = `- ₹ ${discount.toFixed(2)}`;
+    
             if (checkoutTotal) checkoutTotal.textContent = `₹ ${total.toFixed(2)}`;
         }
 
+        
+        function removeItem(itemName) {
+            cart = cart.filter(item => item.name !== itemName);
+            sessionStorage.setItem('cartData', JSON.stringify({ items: cart }));
+            updateCheckoutPage();
+        }
+
         // Save order to Firebase
+    
         async function saveOrderToStorage() {
             if (cart.length === 0) {
                 alert('Your cart is empty!');
@@ -288,8 +323,12 @@ console.log("Customer Mobile:", customerMobile);
             cart.forEach(item => {
                 subtotal += item.price * item.quantity;
             });
-            const discount = subtotal * 0.10;
-            const total = subtotal - discount;
+            
+            const gst = subtotal * 0.05;
+            const subtotalWithGST = subtotal + gst;
+            const discount = subtotalWithGST * 0.10;
+            const total = subtotalWithGST - discount;
+    
             
             try {
                 // Get last order info from Firebase
@@ -325,7 +364,15 @@ console.log("Customer Mobile:", customerMobile);
                     restaurantName: 'Orange Restaurant'
                 };
                 
-                // Save order to Firebase
+                
+        function removeItem(itemName) {
+            cart = cart.filter(item => item.name !== itemName);
+            sessionStorage.setItem('cartData', JSON.stringify({ items: cart }));
+            updateCheckoutPage();
+        }
+
+        // Save order to Firebase
+    
                 await db.collection(ORDERS_COLLECTION).add(order);
                 
                 // Update last order info in Firebase
@@ -403,8 +450,12 @@ console.log("Customer Mobile:", customerMobile);
                     subtotal += item.price * item.quantity;
                 });
 
-                const discount = subtotal * 0.10;
-                const total = subtotal - discount;
+                
+                const gst = subtotal * 0.05;
+                const subtotalWithGST = subtotal + gst;
+                const discount = subtotalWithGST * 0.10;
+                const total = subtotalWithGST - discount;
+    
 
                 // ✅ Start payment first
                 startPayment(total);
