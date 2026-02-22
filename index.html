@@ -14,14 +14,14 @@
 
   const mobile = params.get("mobile");
   const name = decodeURIComponent(params.get("name"));
-  const location = params.get("location");  
+  const customerLocation = params.get("location");  
 
   console.log("User Mobile:", mobile);
   console.log("User Name:", name);
   if (mobile && name && location) {
   sessionStorage.setItem("customerMobile", mobile);
   sessionStorage.setItem("customerName", name);
-  sessionStorage.setItem("customerLocation", location);    
+  sessionStorage.setItem("customerLocation", customerLocation);    
 }
 </script>
 </head>
