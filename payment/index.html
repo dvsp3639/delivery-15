@@ -71,6 +71,7 @@
 
 const customerMobile = sessionStorage.getItem("customerMobile");
 const customerName = sessionStorage.getItem("customerName");
+const customerLocation = sessionStorage.getItem("customerLocation");
 
 console.log("Customer Name:", customerName);
 console.log("Customer Mobile:", customerMobile);
@@ -355,6 +356,9 @@ console.log("Customer Mobile:", customerMobile);
                     orderId: 'ORD' + Date.now(),
                     orderNumber: newBILL,
                     kotNumber: newKOT,
+                    customerName: customerName,
+                    customerMobile: customerMobile,
+                    customerLocation: customerLocation,
                     createdAt: new Date().toLocaleString('en-IN', {
                         year: 'numeric',
                         month: 'short',
@@ -369,7 +373,6 @@ console.log("Customer Mobile:", customerMobile);
                     discount: discount.toFixed(2),
                     total: total.toFixed(2),
                     status: 'pending',
-                    orderType: 'dinein',
                     restaurantName: 'Orange Restaurant'
                 };
                 
